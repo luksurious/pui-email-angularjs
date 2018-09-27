@@ -21,4 +21,6 @@ function DialogController($scope, $mdDialog, dataservice) {
     };
 }
 
+DialogController.$inject = ['$scope', '$mdDialog', 'dataservice'];
+
 export default DialogController;
