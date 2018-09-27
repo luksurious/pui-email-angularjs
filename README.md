@@ -30,4 +30,5 @@ _Running the application_
 - Check skeleton
 - CSS naming
 - dialog registering in angular
+- center avatar
 - Create simple 1 page

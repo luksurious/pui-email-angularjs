@@ -5,9 +5,6 @@ import './overview.styles.css';
 const overviewComponent = () => {
     return {
         template: template,
-        bindings: {
-            featuresStatus: '<'
-        },
         controller: controller,
         controllerAs: 'ctrl'
     }
