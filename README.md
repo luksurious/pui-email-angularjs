@@ -1,10 +1,20 @@
 # Simple Email Viewer
 for `Programming of User Interfaces`
 
-## Prerequisites
-- A recent version of node.js and npm
+![Screenshot](/screenshot.png?raw=true)
+
+## Technologies
+- AngularJS 1.7
+- Angular Material
+- Webpack
+- Babel
 
 ## Getting started
+
+_Prerequisites_
+- A recent version of node.js and npm
+
+_Running the application_
 1. Run `npm install`
 2. Run `npm start`
 3. The previous command will output where he listens, usually it's port `8080`. So you can open the app at http://localhost:8080
