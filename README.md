@@ -3,6 +3,8 @@ for `Programming of User Interfaces`
 
 ![Screenshot](/screenshot.png?raw=true)
 
+Demo available at https://luksurious.github.io/pui-email-angularjs-dist/
+
 ## Technologies
 - AngularJS 1.7
 - Angular Material
