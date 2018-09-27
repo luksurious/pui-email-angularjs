@@ -1,0 +1,67 @@
+<md-dialog aria-label="Add a new email">
+    <form name="addMailForm" ng-cloak ng-submit="addMail($event)">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Add a new email</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="close()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>From</label>
+                        <input ng-model="email.from" type="email" required name="from">
+                        <div ng-messages="addMailForm.from.$error">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="email">The input is not a valid email format.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>To</label>
+                        <input ng-model="email.to" type="email" required name="to">
+                        <div ng-messages="addMailForm.to.$error">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="email">The input is not a valid email format.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Date</label>
+                        <md-datepicker ng-model="email.date" required name="date"></md-datepicker>
+                        <div ng-messages="addMailForm.date.$error">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <md-input-container class="md-block">
+                    <label>Subject</label>
+                    <input ng-model="email.subject" required name="subject">
+                    <div ng-messages="addMailForm.subject.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Body</label>
+                    <textarea ng-model="email.body" rows="5" required name="body"></textarea>
+                    <div ng-messages="addMailForm.body.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised md-primary" ng-disabled="addMailForm.$invalid" type="submit">
+                Add Email
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

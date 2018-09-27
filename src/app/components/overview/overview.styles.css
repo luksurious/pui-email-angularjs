@@ -1,0 +1,13 @@
+.avatar-fake {
+    background-color: #ff6740;
+    color: #fff;
+    text-align: center;
+}
+
+md-list-item .md-list-item-text h3 {
+    font-weight: 600 !important;
+}
+
+.inbox-actions__container md-input-container {
+    margin-bottom: 0;
+}

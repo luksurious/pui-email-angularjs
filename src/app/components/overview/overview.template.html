@@ -1,0 +1,52 @@
+<h2 class="md-display-1">Inbox</h2>
+
+<md-card>
+    <md-card-content>
+        <div layout="row" class="inbox-actions__container">
+            <div flex layout-align="start center" layout="row">
+                <md-button class="md-primary md-raised" ng-click="ctrl.openAddDialog()">Add email</md-button>
+            </div>
+            <div flex layout="row" layout-align="end bottom">
+                <md-input-container>
+                    <label>Filter</label>
+                    <md-icon>search</md-icon>
+                    <input type="text" ng-model="ctrl.searchText">
+                </md-input-container>
+                <md-input-container>
+                    <label>Order by</label>
+                    <md-select ng-model="ctrl.currentOrderBy" ng-model-options="{trackBy: '$value.id'}">
+                        <md-option ng-value="orderBy" ng-repeat="orderBy in ctrl.orderByOptions">{{:: orderBy.title }}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+        <md-list flex ng-show="ctrl.emails.length > 0">
+            <div ng-repeat="email in ctrl.filteredEmails = (ctrl.emails | filter:ctrl.searchText) | orderBy:ctrl.currentOrderBy.comparison">
+                <md-list-item class="md-3-line" ng-click="ctrl.viewEmail(email.id)">
+                    <div class="md-avatar avatar-fake" flex>{{:: email.from| limitTo:1 }}</div>
+                    <div class="md-list-item-text" layout="column">
+                        <h3>
+                            {{:: email.subject }}
+                        </h3>
+                        <h4>
+                            {{:: email.from }}
+                        </h4>
+                        <p>
+                            {{:: email.date | date: 'medium' }}
+                        </p>
+                    </div>
+                    <md-button class="md-primary" ng-click="ctrl.viewEmail(email.id)">{{:: ctrl.detailEmail == email.id ? 'Close' : 'View'}}</md-button>
+                    <md-button class="md-secondary" ng-click="ctrl.deleteEmail(email.id)">Delete</md-button>
+                </md-list-item>
+                <email-details ng-show="ctrl.detailEmail == email.id" emailid="email.id"></email-details>
+                <md-divider ng-if="!$last"></md-divider>
+            </div>
+        </md-list>
+        <div ng-show="ctrl.filteredEmails.length == 0 && ctrl.emails.length > 0">
+            <p>Your search returned no results</p>
+        </div>
+        <div ng-show="ctrl.emails.length == 0">
+            <p>Your inbox is empty!</p>
+        </div>
+    </md-card-content>
+</md-card>
