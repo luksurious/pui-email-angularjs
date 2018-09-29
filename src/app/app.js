@@ -24,15 +24,13 @@ class AppCtrl {
     }
 }
 
-const MODULE_NAME = 'app';
-
-angular.module(MODULE_NAME, ['ngMaterial', 'ngMessages'])
+angular.module('app', ['ngMaterial', 'ngMessages'])
     .directive('app', app)
     .controller('AppCtrl', AppCtrl)
     .service('dataservice', dataservice);
 
-angular.module(MODULE_NAME)
+angular.module('app')
     .directive('overview', overviewComponent)
     .directive('emailDetails', detailComponent);
 
-export default MODULE_NAME;
+export default 'app';

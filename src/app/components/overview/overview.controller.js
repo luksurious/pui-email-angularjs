@@ -24,8 +24,6 @@ const ORDER_BY_OPTIONS = {
 const overviewController = ['dataservice', '$mdDialog', function (dataservice, $mdDialog) {
     let ctrl = this;
 
-    this.test = 'asd';
-
     this.emails = [];
     this.filteredEmails = [];
     this.detailEmail = -1;

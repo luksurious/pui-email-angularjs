@@ -1,0 +1,317 @@
+<!doctype html>
+<html ng-app="app" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PUI - Email Viewer</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,700'>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <style>
+        #content {
+            padding: 10px 40px;
+            max-width: 1140px;
+        }
+
+        .avatar-fake {
+            background-color: #ff6740;
+            color: #fff;
+            text-align: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            line-height: 40px;
+            text-transform: uppercase;
+            margin-right: 10px;
+        }
+
+        md-list-item .md-list-item-text h3 {
+            font-weight: 600 !important;
+        }
+
+        .inbox-actions__container md-input-container {
+            margin-bottom: 0;
+        }
+        
+        .email-body {
+            white-space: pre-wrap;
+            margin-left: 72px;
+        }
+
+        #addDialog md-input-container {
+            width: 400px;
+        }
+    </style>
+
+    <base href="/">
+</head>
+
+<body ng-cloak layout="column">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+    <md-toolbar layout="row" class="md-toolbar-tools">
+        <h1 class="md-headline">Simple Email Viewer</h1>
+    </md-toolbar>
+
+    <div flex layout="row">
+        <md-content flex layout-padding layout="row" layout-align="center top">
+            <div id="content" flex ng-controller="overviewCtrl">
+                <h2 class="md-display-1">Inbox</h2>
+
+                <md-card>
+                    <md-card-content>
+                        <div layout="row" class="inbox-actions__container">
+                            <div flex layout-align="start center" layout="row">
+                                <md-button class="md-primary md-raised" ng-click="openAddDialog()">Add email</md-button>
+                            </div>
+                            <div flex layout="row" layout-align="end bottom">
+                                <md-input-container>
+                                    <label>Filter</label>
+                                    <md-icon>search</md-icon>
+                                    <input type="text" ng-model="searchText">
+                                </md-input-container>
+                                <md-input-container>
+                                    <label>Order by</label>
+                                    <md-select ng-model="currentOrderBy" ng-model-options="{trackBy: '$value.id'}">
+                                        <md-option ng-value="orderBy" ng-repeat="orderBy in orderByOptions">{{::
+                                            orderBy.title }}</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <table style="width:100%; border-spacing: 5px;">
+                            <thead>
+                                <tr>
+                                    <th width="50px">&nbsp;</th>
+                                    <th width="100px">From</th>
+                                    <th>Subject</th>
+                                    <th width="220px">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-show="emails.length > 0">
+                                <tr ng-repeat-start="email in filteredEmails = (emails | filter:searchText) | orderBy:currentOrderBy.comparison">
+                                    <td>
+                                        <div class="avatar-fake" flex>{{:: email.from| limitTo:1 }}</div>
+                                    </td>
+                                    <td>
+                                        {{:: email.from }}
+                                    </td>
+                                    <td>
+                                        {{:: email.subject }}
+                                    </td>
+                                    <td>
+                                        <md-button class="md-primary" ng-click="viewEmail(email.id)">{{ selectedEmail == email.id ? 'Close' : 'View'}}</md-button>
+                                        <md-button class="md-secondary" ng-click="deleteEmail(email.id)">Delete</md-button>
+                                    </td>
+                                </tr>
+                                <tr ng-show="selectedEmail == email.id" ng-repeat-end>
+                                    <td colspan="4">
+                                        <p class="email-body md-body-1">{{:: email.body}}</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-show="filteredEmails.length == 0 && emails.length > 0">
+                            <p>Your search returned no results</p>
+                        </div>
+                        <div ng-show="emails.length == 0">
+                            <p>Your inbox is empty!</p>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </md-content>
+    </div>
+
+    <div style="visibility:hidden;">
+        <div class="md-dialog-container" id="addDialog" ng-controller="addController">
+            <md-dialog aria-label="Add a new email">
+                <form name="addMailForm" ng-cloak ng-submit="addMail($event)">
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h2>Add a new email</h2>
+                            <span flex></span>
+                            <md-button class="md-icon-button" ng-click="close()">
+                                <md-icon aria-label="Close dialog">close</md-icon>
+                            </md-button>
+                        </div>
+                    </md-toolbar>
+
+                    <md-dialog-content>
+                        <div class="md-dialog-content">
+                            <md-input-container class="md-block">
+                                <label>From</label>
+                                <input ng-model="email.from" type="email" required name="from">
+                                <div ng-messages="addMailForm.from.$error">
+                                    <div ng-message="required">This is required.</div>
+                                    <div ng-message="email">The input is not a valid email format.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block">
+                                <label>Subject</label>
+                                <input ng-model="email.subject" required name="subject">
+                                <div ng-messages="addMailForm.subject.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block">
+                                <label>Body</label>
+                                <textarea ng-model="email.body" rows="5" required name="body"></textarea>
+                                <div ng-messages="addMailForm.body.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </md-dialog-content>
+
+                    <md-dialog-actions layout="row">
+                        <span flex></span>
+                        <md-button class="md-raised md-primary" ng-disabled="addMailForm.$invalid" type="submit">
+                            Add Email
+                        </md-button>
+                    </md-dialog-actions>
+                </form>
+            </md-dialog>
+        </div>
+    </div>
+
+    <script>
+        angular.module('app', ['ngMaterial', 'ngMessages'])
+            .controller('overviewCtrl', function ($scope, $rootScope, $mdDialog) {
+                $rootScope.emailDB = EMAILS;
+
+                $scope.emails = [];
+                $scope.filteredEmails = [];
+                $scope.selectedEmail = -1;
+
+                function loadEmails() {
+                    $scope.emails = Object.values($rootScope.emailDB);
+                }
+
+                $rootScope.$watchCollection('emailDB', loadEmails);
+                loadEmails();
+
+                $scope.orderByOptions = ORDER_BY_OPTIONS;
+                $scope.currentOrderBy = ORDER_BY_OPTIONS.dateDesc;
+
+                $scope.searchText = '';
+                $scope.showAddDialog = false;
+
+                $scope.deleteEmail = function (emailId) {
+                    delete $rootScope.emailDB[emailId];
+                };
+
+                $scope.viewEmail = function (emailId) {
+                    if ($scope.selectedEmail == emailId) {
+                        $scope.selectedEmail = -1;
+                    } else {
+                        $scope.selectedEmail = emailId;
+                    }
+                };
+
+                $scope.openAddDialog = function () {
+                    $mdDialog.show({
+                        contentElement: '#addDialog',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true
+                    });
+                };
+            })
+            .controller('addController', function ($scope, $rootScope, $mdDialog) {
+                $scope.close = function () {
+                    $mdDialog.hide();
+                };
+
+                $scope.email = {};
+
+                $scope.addMail = function () {
+                    if ($scope.addMailForm.$invalid) {
+                        return;
+                    }
+
+                    let highestId = Object.values($rootScope.emailDB).reduce((highest, item) => {
+                        if (item.id > highest) {
+                            return item.id
+                        }
+                        return highest;
+                    }, 0);
+
+                    $rootScope.emailDB[ highestId + 1] = {
+                        id: highestId + 1,
+                        from: $scope.email.from,
+                        subject: $scope.email.subject,
+                        body: $scope.email.body
+                    };
+
+                    $scope.email = {};
+                    $scope.addMailForm.$setPristine();
+                    $scope.addMailForm.$setUntouched();
+
+                    $scope.close();
+                };
+            });
+
+        const ORDER_BY_OPTIONS = {
+            subjectAsc: {
+                id: 'subjectAsc', title: 'Subject asc.', comparison: '+subject'
+            },
+            subjectDesc: {
+                id: 'subjectDesc', title: 'Subject desc.', comparison: '-subject'
+            },
+            fromAsc: {
+                id: 'fromAsc', title: 'From asc.', comparison: '+from'
+            },
+            fromDesc: {
+                id: 'fromDesc', title: 'From desc.', comparison: '-from'
+            },
+        };
+
+        const EMAILS = {
+            1: {
+                id: 1,
+                from: 'info@alumni.abc.edu',
+                subject: 'Alumni Newsletter September 2018',
+                body: `One hundred dollars.
+Fry, you can't just sit here in the dark listening to classical music. And when we woke up, we had these bodies. I was having the most wonderful dream. Except you were there, and you were there, and you were there!
+        
+No, she'll probably make me do it. Who am I making this out to? Yep, I remember. They came in last at the Olympics, then retired to promote alcoholic beverages! Bender, quit destroying the universe! That's right, baby. I ain't your loverboy Flexo, the guy you love so much. You even love anyone pretending to be him!`
+            },
+            2: {
+                id: 2,
+                from: 'instructors@mails.freeletics.com',
+                subject: '10 Wege, um produktiver zu werden',
+                body: `It's a hug, Michael. I'm hugging you.
+Michael! I'm afraid I just blue myself. Guy's a pro. I'm half machine. I'm a monster. No! I was ashamed to be SEEN with you. I like being with you.
+
+No! I was ashamed to be SEEN with you. I like being with you.
+Army had half a day.
+But I bought a yearbook ad from you, doesn't that mean anything anymore?`
+            },
+            3: {
+                id: 3,
+                from: 'news@uxmovement.com',
+                subject: 'New UX Article',
+                body: `Newest Articles
+Why You Should Never Center or Right Align Your Logo
+Many designers assume that center or right aligning their website logo will make their brand more memorable. Research has shown this assumption is not true at all.
+
+The Best Place for Error Messages on Forms
+Where are you placing the error messages on your form? If they’re not placed where users expect to see them, you could jeopardize their capability to complete your form.`
+            },
+        };
+
+    </script>
+</body>
+
+</html>
