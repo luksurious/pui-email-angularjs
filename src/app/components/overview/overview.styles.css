@@ -1,14 +1,14 @@
-.avatar-fake {
+.email-item__avatar {
     background-color: #ff6740;
     color: #fff;
     text-align: center;
     line-height: 40px;
 }
 
-md-list-item .md-list-item-text h3 {
-    font-weight: 600 !important;
-}
-
 .inbox-actions__container md-input-container {
     margin-bottom: 0;
+}
+
+md-list-item .md-list-item-text h3 {
+    font-weight: 600 !important;
 }

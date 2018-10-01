@@ -3,8 +3,6 @@ import angular from 'angular';
 import 'angular-material';
 import 'angular-messages';
 
-import 'angular-material/angular-material.css';
-
 import './app.css';
 
 import Dataservice from './services/dataservice';

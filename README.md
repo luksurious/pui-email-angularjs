@@ -22,11 +22,5 @@ _Running the application_
 3. The previous command will output where he listens, usually it's port `8080`. So you can open the app at http://localhost:8080
 
 ## TODO
-- Check best practices for AngularJS
-  - :: for 1 way data binding
-  - bootstrap
-  - ng-cloak
-- Logic to controller
-- Check skeleton
-- CSS naming
 - dialog registering in angular
+- Check flex

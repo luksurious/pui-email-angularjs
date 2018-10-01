@@ -23,7 +23,7 @@
         <md-list flex ng-show="ctrl.emails.length > 0">
             <div ng-repeat="email in ctrl.filteredEmails = (ctrl.emails | filter:ctrl.searchText) | orderBy:ctrl.currentOrderBy.comparison">
                 <md-list-item class="md-3-line" ng-click="ctrl.viewEmail(email.id)">
-                    <div class="md-avatar avatar-fake" flex>{{:: email.from| limitTo:1 }}</div>
+                    <div class="md-avatar email-item__avatar" flex>{{:: email.from| limitTo:1 }}</div>
                     <div class="md-list-item-text" layout="column">
                         <h3>
                             {{:: email.subject }}

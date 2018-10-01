@@ -7,7 +7,7 @@ const DetailsComponent = () => {
     return {
         template: template,
         scope: {
-            emailId: '='
+            emailId: '<'
         },
         controller: controller,
         controllerAs: 'ctrl'
