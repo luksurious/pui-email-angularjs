@@ -1,26 +1,32 @@
 
-function DialogController($scope, $mdDialog, dataservice) {
-    $scope.close = function () {
-        $mdDialog.hide();
-    };
+class DialogController {
+    constructor($mdDialog, dataservice) {
+        this.$mdDialog = $mdDialog;
+        this.dataservice = dataservice;
+    }
 
-    $scope.email = {};
+    $onInit() {
+        this.email = {};
+    }
 
-    $scope.addMail = function () {
-        if ($scope.addMailForm.$invalid) {
+    close() {
+        this.$mdDialog.hide();
+    }
+
+    addMail() {
+        if (this.addMailForm.$invalid) {
             return;
         }
 
-        dataservice.addEmail($scope.email.to, $scope.email.from, $scope.email.subject, $scope.email.date, $scope.email.body);
+        this.dataservice.addEmail(this.email.to, this.email.from, this.email.subject, this.email.date, this.email.body);
 
-        $scope.email = {};
-        $scope.addMailForm.$setPristine();
-        $scope.addMailForm.$setUntouched();
+        this.email = {};
+        this.addMailForm.$setPristine();
+        this.addMailForm.$setUntouched();
 
-        $scope.close();
-    };
+        this.close();
+    }
 }
-
-DialogController.$inject = ['$scope', '$mdDialog', 'dataservice'];
+DialogController.$inject = ['$mdDialog', 'dataservice'];
 
 export default DialogController;

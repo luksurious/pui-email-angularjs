@@ -23,14 +23,10 @@ _Running the application_
 
 ## TODO
 - Check best practices for AngularJS
-  - dependency injection
-  - $scope vs ctrl
   - :: for 1 way data binding
   - bootstrap
-- Controller structure
+  - ng-cloak
 - Logic to controller
 - Check skeleton
 - CSS naming
 - dialog registering in angular
-- center avatar
-- Create simple 1 page

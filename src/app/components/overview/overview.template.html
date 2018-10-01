@@ -38,7 +38,7 @@
                     <md-button class="md-primary" ng-click="ctrl.viewEmail(email.id)">{{ ctrl.detailEmail == email.id ? 'Close' : 'View'}}</md-button>
                     <md-button class="md-secondary" ng-click="ctrl.deleteEmail(email.id)">Delete</md-button>
                 </md-list-item>
-                <email-details ng-show="ctrl.detailEmail == email.id" emailid="email.id"></email-details>
+                <email-details ng-show="ctrl.detailEmail == email.id" email-id="email.id"></email-details>
                 <md-divider ng-if="!$last"></md-divider>
             </div>
         </md-list>

@@ -7,30 +7,22 @@ import 'angular-material/angular-material.css';
 
 import './app.css';
 
-import dataservice from './services/dataservice';
-import overviewComponent from './components/overview/overview.component';
-import detailComponent from './components/details/details.component';
+import Dataservice from './services/dataservice';
+import OverviewComponent from './components/overview/overview.component';
+import DetailsComponent from './components/details/details.component';
 
-let app = () => {
+const App = () => {
     return {
-        template: require('./app.html'),
-        controller: 'AppCtrl',
-        controllerAs: 'app'
-    }
+        template: require('./app.html')
+    };
 };
 
-class AppCtrl {
-    constructor() {
-    }
-}
-
 angular.module('app', ['ngMaterial', 'ngMessages'])
-    .directive('app', app)
-    .controller('AppCtrl', AppCtrl)
-    .service('dataservice', dataservice);
+    .directive('app', App)
+    .service('dataservice', Dataservice);
 
 angular.module('app')
-    .directive('overview', overviewComponent)
-    .directive('emailDetails', detailComponent);
+    .directive('overview', OverviewComponent)
+    .directive('emailDetails', DetailsComponent);
 
 export default 'app';

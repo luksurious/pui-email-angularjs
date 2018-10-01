@@ -3,15 +3,15 @@ import controller from './details.controller';
 
 import './details.styles.css';
 
-const detailsComponent = () => {
+const DetailsComponent = () => {
     return {
         template: template,
         scope: {
-            emailid: '='
+            emailId: '='
         },
         controller: controller,
         controllerAs: 'ctrl'
-    }
+    };
 };
 
-export default detailsComponent;
+export default DetailsComponent;

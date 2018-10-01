@@ -2,12 +2,12 @@ import template from './overview.template.html';
 import controller from './overview.controller';
 import './overview.styles.css';
 
-const overviewComponent = () => {
+const OverviewComponent = () => {
     return {
         template: template,
         controller: controller,
         controllerAs: 'ctrl'
-    }
+    };
 };
 
-export default overviewComponent;
+export default OverviewComponent;

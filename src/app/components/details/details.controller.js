@@ -1,5 +1,13 @@
-const detailsController = ['dataservice', '$scope', function (dataservice, $scope) {
-    this.email = dataservice.getEmailById($scope.emailid);
-}];
+class DetailsController {
+    constructor(dataservice, $scope) {
+        this.dataservice = dataservice;
+        this.emailId = $scope.emailId;
+    }
 
-export default detailsController;
+    $onInit() {
+        this.email = this.dataservice.getEmailById(this.emailId);
+    }
+}
+DetailsController.$inject = ['dataservice', '$scope'];
+
+export default DetailsController;
