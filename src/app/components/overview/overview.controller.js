@@ -1,10 +1,10 @@
-import AddComponent from '../add/add.component';
 import ORDER_BY_OPTIONS from './orderByOptions';
 
 class OverviewController {
-    constructor(dataservice, $mdDialog) {
+    constructor(dataservice, addModal, $mdDialog) {
         this.dataservice = dataservice;
         this.$mdDialog = $mdDialog;
+        this.addModal = addModal;
     }
 
     $onInit() {
@@ -35,7 +35,7 @@ class OverviewController {
     }
 
     openAddDialog() {
-        this.$mdDialog.show(AddComponent)
+        this.$mdDialog.show(this.addModal)
             .then(() => this.loadEmails())
             // ignore errors (dialog closed without submitting)
             .catch(e => {});
@@ -45,6 +45,6 @@ class OverviewController {
         this.emails = Object.values(this.dataservice.getAllEmails());
     }
 }
-OverviewController.$inject = ['dataservice', '$mdDialog'];
+OverviewController.$inject = ['dataservice', 'addModal', '$mdDialog'];
 
 export default OverviewController;

@@ -33,6 +33,12 @@ module.exports = function makeWebpackConfig() {
     app: './src/app/app.js'
   };
 
+  config.externals = {
+    angular: 'angular',
+    'angular-material': 'angular',
+    'angular-messages': 'angular',
+  };
+
   /**
    * Output
    * Reference: http://webpack.github.io/docs/configuration.html#output
