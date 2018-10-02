@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,700'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -17,7 +17,7 @@
             max-width: 1140px;
         }
 
-        .avatar-fake {
+        .email-item__avatar {
             background-color: #ff6740;
             color: #fff;
             text-align: center;
@@ -29,17 +29,17 @@
             margin-right: 10px;
         }
 
-        md-list-item .md-list-item-text h3 {
-            font-weight: 600 !important;
-        }
-
         .inbox-actions__container md-input-container {
             margin-bottom: 0;
         }
         
-        .email-body {
+        .email-item__body {
             white-space: pre-wrap;
             margin-left: 72px;
+        }
+
+        md-list-item .md-list-item-text h3 {
+            font-weight: 600 !important;
         }
 
         #addDialog md-input-container {
@@ -50,87 +50,78 @@
     <base href="/">
 </head>
 
-<body ng-cloak layout="column">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
-
+<body ng-cloak>
     <md-toolbar layout="row" class="md-toolbar-tools">
         <h1 class="md-headline">Simple Email Viewer</h1>
     </md-toolbar>
 
-    <div flex layout="row">
-        <md-content flex layout-padding layout="row" layout-align="center top">
-            <div id="content" flex ng-controller="overviewCtrl">
-                <h2 class="md-display-1">Inbox</h2>
+    <md-content layout-padding layout="row" layout-align="center top">
+        <div id="content" flex ng-controller="overviewCtrl">
+            <h2 class="md-display-1">Inbox</h2>
 
-                <md-card>
-                    <md-card-content>
-                        <div layout="row" class="inbox-actions__container">
-                            <div flex layout-align="start center" layout="row">
-                                <md-button class="md-primary md-raised" ng-click="openAddDialog()">Add email</md-button>
-                            </div>
-                            <div flex layout="row" layout-align="end bottom">
-                                <md-input-container>
-                                    <label>Filter</label>
-                                    <md-icon>search</md-icon>
-                                    <input type="text" ng-model="searchText">
-                                </md-input-container>
-                                <md-input-container>
-                                    <label>Order by</label>
-                                    <md-select ng-model="currentOrderBy" ng-model-options="{trackBy: '$value.id'}">
-                                        <md-option ng-value="orderBy" ng-repeat="orderBy in orderByOptions">{{::
-                                            orderBy.title }}</md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
+            <md-card>
+                <md-card-content>
+                    <div layout="row" class="inbox-actions__container">
+                        <div flex layout-align="start center" layout="row">
+                            <md-button class="md-primary md-raised" ng-click="openAddDialog()">Add email</md-button>
                         </div>
-                        <table style="width:100%; border-spacing: 5px;">
-                            <thead>
-                                <tr>
-                                    <th width="50px">&nbsp;</th>
-                                    <th width="100px">From</th>
-                                    <th>Subject</th>
-                                    <th width="220px">&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody ng-show="emails.length > 0">
-                                <tr ng-repeat-start="email in filteredEmails = (emails | filter:searchText) | orderBy:currentOrderBy.comparison">
-                                    <td>
-                                        <div class="avatar-fake" flex>{{:: email.from| limitTo:1 }}</div>
-                                    </td>
-                                    <td>
-                                        {{:: email.from }}
-                                    </td>
-                                    <td>
-                                        {{:: email.subject }}
-                                    </td>
-                                    <td>
-                                        <md-button class="md-primary" ng-click="viewEmail(email.id)">{{ selectedEmail == email.id ? 'Close' : 'View'}}</md-button>
-                                        <md-button class="md-secondary" ng-click="deleteEmail(email.id)">Delete</md-button>
-                                    </td>
-                                </tr>
-                                <tr ng-show="selectedEmail == email.id" ng-repeat-end>
-                                    <td colspan="4">
-                                        <p class="email-body md-body-1">{{:: email.body}}</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div ng-show="filteredEmails.length == 0 && emails.length > 0">
-                            <p>Your search returned no results</p>
+                        <div flex layout="row" layout-align="end bottom">
+                            <md-input-container>
+                                <label>Filter</label>
+                                <md-icon>search</md-icon>
+                                <input type="text" ng-model="searchText">
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Order by</label>
+                                <md-select ng-model="currentOrderBy" ng-model-options="{trackBy: '$value.id'}">
+                                    <md-option ng-value="orderBy" ng-repeat="orderBy in orderByOptions">{{::
+                                        orderBy.title }}</md-option>
+                                </md-select>
+                            </md-input-container>
                         </div>
-                        <div ng-show="emails.length == 0">
-                            <p>Your inbox is empty!</p>
-                        </div>
-                    </md-card-content>
-                </md-card>
-            </div>
-        </md-content>
-    </div>
+                    </div>
+                    <table style="width:100%; border-spacing: 5px;">
+                        <thead>
+                            <tr>
+                                <th width="50px">&nbsp;</th>
+                                <th width="100px">From</th>
+                                <th>Subject</th>
+                                <th width="220px">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-show="emails.length > 0">
+                            <tr ng-repeat-start="email in filteredEmails = (emails | filter:searchText) | orderBy:currentOrderBy.comparison">
+                                <td>
+                                    <div class="email-item__avatar">{{:: email.from | limitTo:1 }}</div>
+                                </td>
+                                <td>
+                                    {{:: email.from }}
+                                </td>
+                                <td>
+                                    {{:: email.subject }}
+                                </td>
+                                <td>
+                                    <md-button class="md-primary" ng-click="viewEmail(email.id)">{{ selectedEmail == email.id ? 'Close' : 'View'}}</md-button>
+                                    <md-button class="md-secondary" ng-click="deleteEmail(email.id)">Delete</md-button>
+                                </td>
+                            </tr>
+                            <tr ng-show="selectedEmail == email.id" ng-repeat-end>
+                                <td colspan="4">
+                                    <p class="email-item__body md-body-1">{{:: email.body}}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="filteredEmails.length == 0 && emails.length > 0">
+                        <p>Your search returned no results</p>
+                    </div>
+                    <div ng-show="emails.length == 0">
+                        <p>Your inbox is empty!</p>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </md-content>
 
     <div style="visibility:hidden;">
         <div class="md-dialog-container" id="addDialog" ng-controller="addController">
@@ -186,27 +177,31 @@
         </div>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
     <script>
         angular.module('app', ['ngMaterial', 'ngMessages'])
-            .controller('overviewCtrl', function ($scope, $rootScope, $mdDialog) {
+            .run(function ($rootScope) {
                 $rootScope.emailDB = EMAILS;
-
-                $scope.emails = [];
+            })
+            .controller('overviewCtrl', function ($scope, $rootScope, $mdDialog) {
                 $scope.filteredEmails = [];
                 $scope.selectedEmail = -1;
 
-                function loadEmails() {
-                    $scope.emails = Object.values($rootScope.emailDB);
-                }
-
-                $rootScope.$watchCollection('emailDB', loadEmails);
-                loadEmails();
-
                 $scope.orderByOptions = ORDER_BY_OPTIONS;
-                $scope.currentOrderBy = ORDER_BY_OPTIONS.dateDesc;
+                $scope.currentOrderBy = ORDER_BY_OPTIONS.fromAsc;
 
                 $scope.searchText = '';
                 $scope.showAddDialog = false;
+                $scope.emails = Object.values($rootScope.emailDB);
+
+                $rootScope.$watchCollection('emailDB', function() {
+                    $scope.emails = Object.values($rootScope.emailDB);
+                });
 
                 $scope.deleteEmail = function (emailId) {
                     delete $rootScope.emailDB[emailId];
